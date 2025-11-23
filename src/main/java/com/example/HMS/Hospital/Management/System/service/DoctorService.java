@@ -1,12 +1,15 @@
 package com.example.HMS.Hospital.Management.System.service;
 
 import com.example.HMS.Hospital.Management.System.models.Doctor;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class DoctorService {
+
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(DoctorService.class);
 
     public List<Doctor> getAllDoctors() {
         // Logic to retrieve all doctors from the database
@@ -16,6 +19,7 @@ public class DoctorService {
             return null;
         } catch (Exception e) {
             // Handle exceptions appropriately
+            logger.error("Error retrieving doctors: {}", e.getMessage());
             throw new RuntimeException("Error retrieving doctors", e);
         }
     }
@@ -28,6 +32,7 @@ public class DoctorService {
             return doctor;
         } catch (Exception e) {
             // Handle exceptions appropriately
+            logger.error("Error creating doctor: {}", e.getMessage());
             throw new RuntimeException("Error creating doctor", e);
         }
     }
@@ -40,6 +45,7 @@ public class DoctorService {
             return null;
         } catch (Exception e) {
             // Handle exceptions appropriately
+            logger.error("Error retrieving doctor with ID {}: {}", id, e.getMessage());
             throw new RuntimeException("Error retrieving doctor with ID: " + id, e);
         }
     }
@@ -51,6 +57,7 @@ public class DoctorService {
             System.out.println("Deleting doctor with ID: " + id);
         } catch (Exception e) {
             // Handle exceptions appropriately
+            logger.error("Error deleting doctor with ID {}: {}", id, e.getMessage());
             throw new RuntimeException("Error deleting doctor with ID: " + id, e);
         }
     }
@@ -63,6 +70,7 @@ public class DoctorService {
             return doctor;
         } catch (Exception e) {
             // Handle exceptions appropriately
+            logger.error("Error updating doctor with ID {}: {}", id, e.getMessage());
             throw new RuntimeException("Error updating doctor with ID: " + id, e);
         }
     }
