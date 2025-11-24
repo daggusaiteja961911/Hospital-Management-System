@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BillService {
@@ -69,7 +70,19 @@ public class BillService {
         try {
             // Logic to update a bill by ID
             System.out.println("Updating bill with ID: " + id);
-            return billRepository.save(bill);
+            Optional<Bill> existingBillOpt = billRepository.findById(id);
+            if (existingBillOpt.isPresent()) {
+                Bill existingBill = existingBillOpt.get();
+                // Update fields of existingBill with values from bill
+                existingBill.setAmount(bill.getAmount());
+                existingBill.setStatus(bill.getStatus());
+                billRepository.save(existingBill);
+                return existingBill;
+            } else {
+                System.out.println("Bill with ID " + id + " not found.");
+                logger.error("Bill with ID {} not found.", id);
+                return null;
+            }
         } catch (Exception e) {
             System.out.println("Error updating bill with ID " + id + ": " + e.getMessage());
             logger.error("Error updating bill with ID {} : {}", id, e.getMessage());

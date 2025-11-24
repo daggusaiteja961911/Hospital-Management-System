@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DoctorService {
@@ -73,7 +74,18 @@ public class DoctorService {
         try {
             // Simulating database update
             System.out.println("Updating doctor with ID: " + id);
-            return doctorRepository.save(doctor);
+            Optional<Doctor> existingDoctorOpt = doctorRepository.findById(id);
+            if (existingDoctorOpt.isPresent()) {
+                Doctor existingDoctor = existingDoctorOpt.get();
+                existingDoctor.setName(doctor.getName());
+                existingDoctor.setSpeciality(doctor.getSpeciality());
+                doctorRepository.save(existingDoctor);
+                return existingDoctor;
+            } else {
+                System.out.println("Doctor with ID " + id + " not found.");
+                logger.error("Doctor with ID {} not found.", id);
+                return null;
+            }
         } catch (Exception e) {
             // Handle exceptions appropriately
             logger.error("Error updating doctor with ID {}: {}", id, e.getMessage());
