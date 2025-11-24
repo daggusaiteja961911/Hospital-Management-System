@@ -1,8 +1,10 @@
 package com.example.HMS.Hospital.Management.System.service;
 
 import com.example.HMS.Hospital.Management.System.models.Bill;
+import com.example.HMS.Hospital.Management.System.repository.BillRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +14,14 @@ public class BillService {
 
     private static final Logger logger = LoggerFactory.getLogger(BillService.class);
 
+    @Autowired
+    private BillRepository billRepository;
+
     public List<Bill> getAllBills() {
         try{
             // Logic to retrieve all bills
             System.out.println("Fetching all bills from service");
-            return null;
+            return billRepository.findAll();
         } catch (Exception e) {
             System.out.println("Error fetching all bills: " + e.getMessage());
             logger.error("Error fetching all bills : {}", e.getMessage());
@@ -28,7 +33,7 @@ public class BillService {
         try{
             // Logic to create a new bill
             System.out.println("Creating a new bill");
-            return bill;
+            return billRepository.save(bill);
         } catch (Exception e) {
             System.out.println("Error creating a new bill: " + e.getMessage());
             logger.error("Error creating a new bill : {}", e.getMessage());
@@ -40,7 +45,7 @@ public class BillService {
         try {
             // Logic to retrieve a bill by ID
             System.out.println("Fetching bill with ID: " + id);
-            return null;
+            return billRepository.findById(id).orElse(null);
         } catch (Exception e) {
             System.out.println("Error fetching bill with ID " + id + ": " + e.getMessage());
             logger.error("Error fetching bill with ID {} : {}", id, e.getMessage());
@@ -52,6 +57,7 @@ public class BillService {
         try {
             // Logic to delete a bill by ID
             System.out.println("Deleting bill with ID: " + id);
+            billRepository.deleteById(id);
         } catch (Exception e) {
             System.out.println("Error deleting bill with ID " + id + ": " + e.getMessage());
             logger.error("Error deleting bill with ID {} : {}", id, e.getMessage());
@@ -63,7 +69,7 @@ public class BillService {
         try {
             // Logic to update a bill by ID
             System.out.println("Updating bill with ID: " + id);
-            return bill;
+            return billRepository.save(bill);
         } catch (Exception e) {
             System.out.println("Error updating bill with ID " + id + ": " + e.getMessage());
             logger.error("Error updating bill with ID {} : {}", id, e.getMessage());
