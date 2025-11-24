@@ -5,6 +5,9 @@ import com.example.HMS.Hospital.Management.System.repository.PatientRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +21,12 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public List<Patient> getAllPatients() {
+    public Page<Patient> getAllPatients(int page, int size) {
         try{
             // Logic to retrieve all patients
             System.out.println("Fetching all patients from service");
-            return patientRepository.findAll();
+            Pageable pageable = PageRequest.of(page, size);
+            return patientRepository.findAll(pageable);
         } catch (Exception e) {
             System.out.println("Error fetching all patients: " + e.getMessage());
             logger.error("Error fetching all patients : {}", e.getMessage());
